@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:news_app/core/constant/app_constant.dart';
-import 'package:news_app/core/networking/api_endpont.dart';
-import 'package:news_app/core/networking/dio_helper.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/core/widgets/spacing.dart';
+import 'package:news_app/features/home/models/top_head_line_model.dart';
+import 'package:news_app/features/home/services/home_screen_service.dart';
 import 'package:news_app/features/home/widgets/articel_card_widget.dart';
 import 'package:news_app/features/home/widgets/custom_category_item_widget.dart';
 import 'package:news_app/features/home/widgets/top_headline_widget.dart';
@@ -19,14 +18,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    DioHelper.getRequest(ApiEndpont.topHeadlinesEndpoint, {
-      "apiKey": AppConstant.newsApiKey,
-      "country": "us",
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,74 +41,108 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            HeightSpace(16),
-            Padding(
-              padding: EdgeInsetsDirectional.only(start: 32.w),
-              child: SizedBox(
-                height: 40.h,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+        body: FutureBuilder(
+          future: HomeScreenService().getTopHeadlinesArticles(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Error: ${snapshot.error}"),
+              );
+            }
+            if (snapshot.hasData) {
+              TopHeadLineModel topHeadLineModel =
+                  snapshot.data as TopHeadLineModel;
+              if (topHeadLineModel.articles!.isNotEmpty) {
+                return Column(
                   children: [
-                    CustomCategoryItemWidget(
-                      title: 'Travel',
+                    HeightSpace(16),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(start: 32.w),
+                      child: SizedBox(
+                        height: 40.h,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            CustomCategoryItemWidget(
+                              title: 'Travel',
+                            ),
+                            CustomCategoryItemWidget(
+                              title: 'Technology',
+                            ),
+                            CustomCategoryItemWidget(
+                              title: 'Business',
+                            ),
+                            CustomCategoryItemWidget(
+                              title: 'Entertainment',
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    CustomCategoryItemWidget(
-                      title: 'Technology',
+                    HeightSpace(24),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
+                      child: Column(
+                        children: [
+                          TopHeadlineWidget(
+                            title:
+                                topHeadLineModel.articles![0].title ??
+                                'Top Headline',
+                            author:
+                                topHeadLineModel.articles![0].author ??
+                                'John Doe',
+                            imageUrl:
+                                topHeadLineModel.articles![0].urlToImage ?? '',
+                            date:
+                                "${topHeadLineModel.articles![0].publishedAt!.day}-${topHeadLineModel.articles![0].publishedAt!.month}-${topHeadLineModel.articles![0].publishedAt!.year}",
+                          ),
+                        ],
+                      ),
                     ),
-                    CustomCategoryItemWidget(
-                      title: 'Business',
-                    ),
-                    CustomCategoryItemWidget(
-                      title: 'Entertainment',
+                    HeightSpace(40),
+                    Expanded(
+                      child: ListView(
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 32.w),
+                            child: Column(
+                              children: List.generate(topHeadLineModel.articles!.length, (index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 24.h),
+                                  child: ArticelCardWidget(
+                                    title: topHeadLineModel.articles![index].title ?? 'Latest News Headline',
+                                    author: topHeadLineModel.articles![index].author ?? 'Author',
+                                    imageUrl:
+                                        topHeadLineModel.articles![index].urlToImage ?? 'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
+                                    date: topHeadLineModel.articles![index].publishedAt != null ? "${topHeadLineModel.articles![index].publishedAt!.day}-${topHeadLineModel.articles![index].publishedAt!.month}-${topHeadLineModel.articles![index].publishedAt!.year}" : 'Unknown Date',
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ),
-            ),
-            HeightSpace(24),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: Column(
-                children: [
-                  TopHeadlineWidget(
-                    title: 'Top Headline',
-                    author: 'John Doe',
-                    imageUrl: '',
-                    date: '2023-01-01',
-                  ),
-                ],
-              ),
-            ),
-            HeightSpace(40),
-            Expanded(
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.w),
-                    child: Column(
-                      children: List.generate(5, (index) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 24.h),
-                          child: ArticelCardWidget(
-                            title: 'Latest News Headline $index',
-                            author: 'Author $index',
-                            imageUrl:
-                                'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
-                            date: '2023-01-0${index + 2}',
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                );
+              } else {
+                return Center(
+                  child: Text("No articles found").tr(),
+                );
+              }
+            }
+            return Center(
+              child: Text("Something went wrong").tr(),
+            );
+          },
         ),
       ),
     );
