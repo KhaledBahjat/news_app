@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Top Headline',
                     author: 'John Doe',
                     imageUrl:
-                        'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
+                        '',
                     date: '2023-01-01',
                   ),
                 ],

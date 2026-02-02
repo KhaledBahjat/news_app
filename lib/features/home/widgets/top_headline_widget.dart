@@ -9,12 +9,12 @@ class TopHeadlineWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.author,
-    this.imageUrl,
+    required this.imageUrl,
     required this.date,
   });
   final String title;
   final String author;
-  final String? imageUrl;
+  final String imageUrl;
   final String date;
   @override
   Widget build(BuildContext context) {
@@ -25,27 +25,16 @@ class TopHeadlineWidget extends StatelessWidget {
           width: double.infinity,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8.r),
-            child: imageUrl == ""
-                ? Container(
-                    color: Colors.grey.shade300,
-                    height: 206.h,
-                    width: 320.w,
-                  )
-                : CachedNetworkImage(
-                    imageUrl: imageUrl!,
+            child: imageUrl == ''
+                ? Image.asset(
+                    'assets/image/breakin_news.avif',
                     height: 206.h,
                     fit: BoxFit.fill,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey.shade300,
-                      height: 206.h,
-                      width: 320.w,
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey.shade300,
-                      height: 206.h,
-                      width: 320.w,
-                      child: Icon(Icons.error),
-                    ),
+                  )
+                : CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    height: 206.h,
+                    fit: BoxFit.fill,
                   ),
           ),
         ),
