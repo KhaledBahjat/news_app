@@ -7,13 +7,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  DioHelper.initDio();
+  // DioHelper.initDio();
 
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale("ar")],
-      path:
-          'assets/translation', 
+      path: 'assets/translation',
       fallbackLocale: const Locale('ar'),
       // startLocale: const Locale('ar'),
       child: const NewsApp(),
