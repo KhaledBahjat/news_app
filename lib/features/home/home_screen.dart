@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/core/constant/app_constant.dart';
+import 'package:news_app/core/networking/api_endpont.dart';
+import 'package:news_app/core/networking/dio_helper.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/core/widgets/spacing.dart';
 import 'package:news_app/features/home/widgets/articel_card_widget.dart';
@@ -15,6 +18,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    DioHelper.getRequest(ApiEndpont.topHeadlinesEndpoint, {
+      "apiKey": AppConstant.newsApiKey,
+      "country": "us",
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,8 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   TopHeadlineWidget(
                     title: 'Top Headline',
                     author: 'John Doe',
-                    imageUrl:
-                        '',
+                    imageUrl: '',
                     date: '2023-01-01',
                   ),
                 ],
