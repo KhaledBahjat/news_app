@@ -31,4 +31,6 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
     color: const Color(0xff878787),
   );
+
+  static Null get headlineStyles => null;
 }
