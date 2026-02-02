@@ -7,9 +7,7 @@ import 'package:news_app/core/routing/router_generator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-
   DioHelper.initDio();
-
   runApp(
     EasyLocalization(
       supportedLocales:  [Locale('en'), Locale('ar')],
@@ -24,7 +22,6 @@ void main() async {
 
 class NewsApp extends StatelessWidget {
   const NewsApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
