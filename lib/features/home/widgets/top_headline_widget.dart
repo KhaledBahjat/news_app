@@ -9,12 +9,12 @@ class TopHeadlineWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.author,
-    required this.imageUrl,
+    this.imageUrl,
     required this.date,
   });
   final String title;
   final String author;
-  final String imageUrl;
+  final String? imageUrl;
   final String date;
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class TopHeadlineWidget extends StatelessWidget {
                     width: 320.w,
                   )
                 : CachedNetworkImage(
-                    imageUrl: imageUrl,
+                    imageUrl: imageUrl!,
                     height: 206.h,
                     fit: BoxFit.fill,
                     placeholder: (context, url) => Container(

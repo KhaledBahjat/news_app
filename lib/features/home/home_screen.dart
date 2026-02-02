@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/core/widgets/spacing.dart';
+import 'package:news_app/features/home/widgets/articel_card_widget.dart';
 import 'package:news_app/features/home/widgets/custom_category_item_widget.dart';
 import 'package:news_app/features/home/widgets/top_headline_widget.dart';
 
@@ -75,6 +76,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     imageUrl:
                         'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
                     date: '2023-01-01',
+                  ),
+                ],
+              ),
+            ),
+            HeightSpace(40),
+            Expanded(
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: Column(
+                      children: List.generate(5, (index) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 24.h),
+                          child: ArticelCardWidget(
+                            title: 'Latest News Headline $index',
+                            author: 'Author $index',
+                            imageUrl:
+                                'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
+                            date: '2023-01-0${index + 2}',
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ],
               ),
