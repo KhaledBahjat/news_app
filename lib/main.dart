@@ -11,10 +11,11 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale("ar")],
+      supportedLocales:  [Locale('en'), Locale('ar')],
       path: 'assets/translation',
-      fallbackLocale: const Locale('ar'),
-      // startLocale: const Locale('ar'),
+      fallbackLocale: Locale('en'),
+      startLocale: Locale('en'),
+      saveLocale: false,
       child: const NewsApp(),
     ),
   );
@@ -31,6 +32,7 @@ class NewsApp extends StatelessWidget {
       splitScreenMode: false,
       builder: (context, child) {
         return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           title: 'News App',
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
