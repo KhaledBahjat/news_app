@@ -3,8 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 
 class CustomCategoryItemWidget extends StatelessWidget {
-  const CustomCategoryItemWidget({super.key, required this.title});
+  const CustomCategoryItemWidget({super.key, required this.title, required this.onTap});
   final String title;
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -12,7 +13,7 @@ class CustomCategoryItemWidget extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(56.r),
         splashColor: Color(0xffE9EEFA),
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: 32.h,
           alignment: Alignment.center,
