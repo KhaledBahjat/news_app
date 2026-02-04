@@ -33,4 +33,6 @@ class AppTextStyles {
   );
 
   static Null get headlineStyles => null;
+
+  static TextStyle? get black16Medium => null;
 }
