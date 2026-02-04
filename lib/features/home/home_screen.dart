@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/core/constant/app_constant.dart';
 import 'package:news_app/core/routing/app_routs.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/core/widgets/spacing.dart';
@@ -36,6 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Color(0xffE9EEFA),
           actions: [
             SearchTextFeildWidget(),
+            IconButton(
+              onPressed: () {
+                if (context.locale.languageCode == 'ar') {
+                  context.setLocale(Locale('en'));
+                } else {
+                  context.setLocale(Locale('ar'));
+                }
+                AppConstant.lang = context.locale.languageCode;
+              },
+              icon: Icon(Icons.language),
+            ),
           ],
         ),
         body: FutureBuilder(
@@ -69,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           physics: BouncingScrollPhysics(),
                           children: [
                             CustomCategoryItemWidget(
-                              title: 'Travel',
+                              title: 'travel'.tr(),
                               onTap: () => {
                                 GoRouter.of(context).pushNamed(
                                   AppRoutes.searchResultScreen,
@@ -78,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             CustomCategoryItemWidget(
-                              title: 'Technology',
+                              title: 'technology'.tr(),
                               onTap: () => {
                                 GoRouter.of(context).pushNamed(
                                   AppRoutes.searchResultScreen,
@@ -87,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             CustomCategoryItemWidget(
-                              title: 'Business',
+                              title: 'business'.tr(),
                               onTap: () => {
                                 GoRouter.of(context).pushNamed(
                                   AppRoutes.searchResultScreen,
@@ -96,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             CustomCategoryItemWidget(
-                              title: 'Entertainment',
+                              title: 'entertainment'.tr(),
                               onTap: () => {
                                 GoRouter.of(context).pushNamed(
                                   AppRoutes.searchResultScreen,
@@ -142,28 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return Padding(
                                     padding: EdgeInsets.only(bottom: 24.h),
                                     child: ArticelCardWidget(
-                                      title:
-                                          topHeadLineModel
-                                              .articles![index]
-                                              .title ??
-                                          'Latest News Headline',
-                                      author:
-                                          topHeadLineModel
-                                              .articles![index]
-                                              .author ??
-                                          'Author',
-                                      imageUrl:
-                                          topHeadLineModel
-                                              .articles![index]
-                                              .urlToImage ??
-                                          'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
-                                      date:
-                                          topHeadLineModel
-                                                  .articles![index]
-                                                  .publishedAt !=
-                                              null
-                                          ? "${topHeadLineModel.articles![index].publishedAt!.day}-${topHeadLineModel.articles![index].publishedAt!.month}-${topHeadLineModel.articles![index].publishedAt!.year}"
-                                          : 'Unknown Date',
+                                      article:
+                                          topHeadLineModel.articles![index],
                                     ),
                                   );
                                 },
@@ -177,12 +169,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               } else {
                 return Center(
-                  child: Text("No articles found").tr(),
+                  child: Text("no_articles_found".tr()),
                 );
               }
             }
             return Center(
-              child: Text("Something went wrong").tr(),
+              child: Text("something_went_wrong".tr()),
             );
           },
         ),
