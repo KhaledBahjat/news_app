@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/core/constant/app_constant.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/features/home/models/top_head_line_model.dart';
 import 'package:news_app/features/home/widgets/articel_card_widget.dart';
@@ -16,6 +17,19 @@ class SearchResultScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (context.locale.languageCode == 'ar') {
+                context.setLocale(Locale('en'));
+              } else {
+                context.setLocale(Locale('ar'));
+              }
+              AppConstant.lang = context.locale.languageCode;
+            },
+            icon: Icon(Icons.language),
+          ),
+        ],
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -62,14 +76,7 @@ class SearchResultScreen extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.only(bottom: 24.h),
                 child: ArticelCardWidget(
-                  title: article.title ?? 'Latest News Headline',
-                  author: article.author ?? 'Author',
-                  imageUrl:
-                      article.urlToImage ??
-                      'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
-                  date: article.publishedAt != null
-                      ? "${article.publishedAt!.day}-${article.publishedAt!.month}-${article.publishedAt!.year}"
-                      : 'Unknown Date',
+                  article: article,
                 ),
               );
             },
