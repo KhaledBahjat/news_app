@@ -1,12 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:news_app/core/routing/app_routs.dart';
 import 'package:news_app/core/style/app_text_style.dart';
 import 'package:news_app/core/widgets/spacing.dart';
 import 'package:news_app/features/home/models/top_head_line_model.dart';
 import 'package:news_app/features/home/services/home_screen_service.dart';
 import 'package:news_app/features/home/widgets/articel_card_widget.dart';
 import 'package:news_app/features/home/widgets/custom_category_item_widget.dart';
+import 'package:news_app/features/home/widgets/search_text_feild_widget.dart';
 import 'package:news_app/features/home/widgets/top_headline_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,12 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           toolbarHeight: 68.h,
           backgroundColor: Color(0xffE9EEFA),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search),
-              iconSize: 30.w,
-              color: Color(0xff231F20),
-            ),
+            SearchTextFeildWidget(),
           ],
         ),
         body: FutureBuilder(
@@ -46,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: Color(0xff231F20),
+                ),
               );
             }
             if (snapshot.hasError) {
@@ -55,8 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
             if (snapshot.hasData) {
-              TopHeadLineModel topHeadLineModel =
-                  snapshot.data as TopHeadLineModel;
+              ArticlesMoodel topHeadLineModel = snapshot.data as ArticlesMoodel;
               if (topHeadLineModel.articles!.isNotEmpty) {
                 return Column(
                   children: [
@@ -72,15 +70,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             CustomCategoryItemWidget(
                               title: 'Travel',
+                              onTap: () => {
+                                GoRouter.of(context).pushNamed(
+                                  AppRoutes.searchResultScreen,
+                                  extra: 'travel'.tr(),
+                                ),
+                              },
                             ),
                             CustomCategoryItemWidget(
                               title: 'Technology',
+                              onTap: () => {
+                                GoRouter.of(context).pushNamed(
+                                  AppRoutes.searchResultScreen,
+                                  extra: 'technology'.tr(),
+                                ),
+                              },
                             ),
                             CustomCategoryItemWidget(
                               title: 'Business',
+                              onTap: () => {
+                                GoRouter.of(context).pushNamed(
+                                  AppRoutes.searchResultScreen,
+                                  extra: 'business'.tr(),
+                                ),
+                              },
                             ),
                             CustomCategoryItemWidget(
                               title: 'Entertainment',
+                              onTap: () => {
+                                GoRouter.of(context).pushNamed(
+                                  AppRoutes.searchResultScreen,
+                                  extra: 'entertainment'.tr(),
+                                ),
+                              },
                             ),
                           ],
                         ),
@@ -114,18 +136,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 32.w),
                             child: Column(
-                              children: List.generate(topHeadLineModel.articles!.length, (index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 24.h),
-                                  child: ArticelCardWidget(
-                                    title: topHeadLineModel.articles![index].title ?? 'Latest News Headline',
-                                    author: topHeadLineModel.articles![index].author ?? 'Author',
-                                    imageUrl:
-                                        topHeadLineModel.articles![index].urlToImage ?? 'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
-                                    date: topHeadLineModel.articles![index].publishedAt != null ? "${topHeadLineModel.articles![index].publishedAt!.day}-${topHeadLineModel.articles![index].publishedAt!.month}-${topHeadLineModel.articles![index].publishedAt!.year}" : 'Unknown Date',
-                                  ),
-                                );
-                              }),
+                              children: List.generate(
+                                topHeadLineModel.articles!.length,
+                                (index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 24.h),
+                                    child: ArticelCardWidget(
+                                      title:
+                                          topHeadLineModel
+                                              .articles![index]
+                                              .title ??
+                                          'Latest News Headline',
+                                      author:
+                                          topHeadLineModel
+                                              .articles![index]
+                                              .author ??
+                                          'Author',
+                                      imageUrl:
+                                          topHeadLineModel
+                                              .articles![index]
+                                              .urlToImage ??
+                                          'https://ichef.bbci.co.uk/images/ic/624x351/p0gdcnjt.jpg',
+                                      date:
+                                          topHeadLineModel
+                                                  .articles![index]
+                                                  .publishedAt !=
+                                              null
+                                          ? "${topHeadLineModel.articles![index].publishedAt!.day}-${topHeadLineModel.articles![index].publishedAt!.month}-${topHeadLineModel.articles![index].publishedAt!.year}"
+                                          : 'Unknown Date',
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
