@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/core/constant/app_constant.dart';
 import 'package:news_app/core/networking/dio_helper.dart';
 import 'package:news_app/core/routing/router_generator.dart';
 
@@ -10,11 +11,10 @@ void main() async {
   DioHelper.initDio();
   runApp(
     EasyLocalization(
-      supportedLocales:  [Locale('en'), Locale('ar')],
+      supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translation',
       fallbackLocale: Locale('en'),
-      startLocale: Locale('en'),
-      saveLocale: false,
+      startLocale: Locale(AppConstant.lang),
       child: const NewsApp(),
     ),
   );
