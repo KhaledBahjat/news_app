@@ -11,6 +11,7 @@ class HomeScreenService {
         query: {
           "apiKey": AppConstant.newsApiKey,
           "country": "us",
+          "lang": AppConstant.lang,
         },
       );
       if (response.statusCode == 200) {
