@@ -4,7 +4,7 @@ import 'package:news_app/core/networking/dio_helper.dart';
 import 'package:news_app/features/home/models/top_head_line_model.dart';
 
 class HomeScreenService {
-  Future<TopHeadLineModel> getTopHeadlinesArticles() async {
+  Future<ArticlesMoodel> getTopHeadlinesArticles() async {
     try {
       var response = await DioHelper.getRequest(
         endpoint: ApiEndpont.topHeadlinesEndpoint,
@@ -14,7 +14,7 @@ class HomeScreenService {
         },
       );
       if (response.statusCode == 200) {
-        TopHeadLineModel topHeadLineModel = TopHeadLineModel.fromJson(
+        ArticlesMoodel topHeadLineModel = ArticlesMoodel.fromJson(
           response.data,
         );
         return topHeadLineModel;
